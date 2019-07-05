@@ -32,12 +32,17 @@ router.get('/register', userController.registerForm);
 router.post('/register',
   userController.validateRegister, // 1. Validate the registration data
   userController.register, // 2. Register the user
-  authController.login // 3. We need to log them in
+  authController.login // 3. Log them in
 );
 
 router.get('/logout', authController.logout);
 
 router.get('/account', authController.isLoggedIn, userController.account);
 router.post('/account', catchErrors(userController.account));
+router.post('/account/forgot', catchErrors(authController.forgot));
+router.get('/account/reset/:token', catchErrors(authController.reset));
+router.post('/account/reset/:token',
+  authController.confirmedPasswords,
+  catchErrors(authController.update))
 
 module.exports = router;
